@@ -16,7 +16,8 @@ CREATE VIEW `receipt_details` AS
         receipt.total,
         customer_account.name,
         customer_account.income_level,
-        customer_account.customer_type_id
+        customer_account.customer_type_id,
+        receipt.active
     FROM
         receipt_line_item
             INNER JOIN

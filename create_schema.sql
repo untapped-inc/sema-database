@@ -335,6 +335,29 @@ CREATE TABLE `kiosk_parameter` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `kiosk_settings`
+--
+
+DROP TABLE IF EXISTS `kiosk_settings`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `kiosk_settings` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date/Time when created.',
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Date/Time when updated.',
+  `kiosk_id` bigint(20) NOT NULL COMMENT 'Kiosk reference.',
+  `settings_id` bigint(20) NOT NULL,
+  `value` longtext NOT NULL,
+  `active` bit(1) NOT NULL DEFAULT b'1' COMMENT '1 to display item on UI, 0 to hide.',
+  PRIMARY KEY (`id`),
+  KEY `kiosk_settings_kiosk_id_fk_idx` (`kiosk_id`),
+  KEY `kiosk_settings_settings_id_fk_idx` (`settings_id`),
+  CONSTRAINT `kiosk_settings_kiosk_id_fk` FOREIGN KEY (`kiosk_id`) REFERENCES `kiosk` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `kiosk_settings_settings_id_fk` FOREIGN KEY (`settings_id`) REFERENCES `settings` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `measurement`
 --
 
@@ -960,4 +983,4 @@ CREATE TABLE `vehicle` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-03-26 12:56:09
+-- Dump completed on 2019-05-16 14:29:08
