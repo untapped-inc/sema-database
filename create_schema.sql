@@ -4,6 +4,10 @@
 -- ------------------------------------------------------
 -- Server version	5.6.35
 
+CREATE DATABASE sema_core;
+
+USE sema_core;
+
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
@@ -138,27 +142,6 @@ CREATE TABLE `customer_account_sponsor` (
   CONSTRAINT `customer_account_sponsor_sponsor_id_fk` FOREIGN KEY (`sponsor_id`) REFERENCES `sponsor` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Maps sponsor to a specific customer account.';
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Temporary view structure for view `customer_details`
---
-
-DROP TABLE IF EXISTS `customer_details`;
-/*!50001 DROP VIEW IF EXISTS `customer_details`*/;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-/*!50001 CREATE VIEW `customer_details` AS SELECT 
- 1 AS `active`,
- 1 AS `created_at`,
- 1 AS `customer_name`,
- 1 AS `income_level`,
- 1 AS `gender`,
- 1 AS `distance`,
- 1 AS `customer_consumer_base`,
- 1 AS `kiosk_name`,
- 1 AS `kiosk_id`,
- 1 AS `kiosk_consumer_base`*/;
-SET character_set_client = @saved_cs_client;
 
 --
 -- Table structure for table `customer_type`
@@ -596,34 +579,6 @@ CREATE TABLE `receipt` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Temporary view structure for view `receipt_details`
---
-
-DROP TABLE IF EXISTS `receipt_details`;
-/*!50001 DROP VIEW IF EXISTS `receipt_details`*/;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-/*!50001 CREATE VIEW `receipt_details` AS SELECT 
- 1 AS `created_at`,
- 1 AS `quantity`,
- 1 AS `product_id`,
- 1 AS `receipt_id`,
- 1 AS `sales_channel_id`,
- 1 AS `kiosk_id`,
- 1 AS `amount_cash`,
- 1 AS `amount_loan`,
- 1 AS `amount_mobile`,
- 1 AS `amount_card`,
- 1 AS `customer_account_id`,
- 1 AS `unit_per_product`,
- 1 AS `volume`,
- 1 AS `total`,
- 1 AS `name`,
- 1 AS `income_level`,
- 1 AS `customer_type_id`*/;
-SET character_set_client = @saved_cs_client;
-
---
 -- Table structure for table `receipt_line_item`
 --
 
@@ -938,41 +893,6 @@ CREATE TABLE `vehicle` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='List of vehicles.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Final view structure for view `customer_details`
---
-
-/*!50001 DROP VIEW IF EXISTS `customer_details`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8 */;
-/*!50001 SET character_set_results     = utf8 */;
-/*!50001 SET collation_connection      = utf8_general_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`::1` SQL SECURITY DEFINER */
-/*!50001 VIEW `customer_details` AS select `customer_account`.`active` AS `active`,`customer_account`.`created_at` AS `created_at`,`customer_account`.`name` AS `customer_name`,`customer_account`.`income_level` AS `income_level`,`customer_account`.`gender` AS `gender`,`customer_account`.`distance` AS `distance`,`customer_account`.`consumer_base` AS `customer_consumer_base`,`kiosk`.`name` AS `kiosk_name`,`kiosk`.`id` AS `kiosk_id`,`kiosk`.`consumer_base` AS `kiosk_consumer_base` from (`customer_account` join `kiosk` on((`customer_account`.`kiosk_id` = `kiosk`.`id`))) */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-
---
--- Final view structure for view `receipt_details`
---
-
-/*!50001 DROP VIEW IF EXISTS `receipt_details`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8 */;
-/*!50001 SET character_set_results     = utf8 */;
-/*!50001 SET collation_connection      = utf8_general_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`::1` SQL SECURITY DEFINER */
-/*!50001 VIEW `receipt_details` AS select `receipt_line_item`.`created_at` AS `created_at`,`receipt_line_item`.`quantity` AS `quantity`,`receipt_line_item`.`product_id` AS `product_id`,`receipt_line_item`.`receipt_id` AS `receipt_id`,`receipt`.`sales_channel_id` AS `sales_channel_id`,`receipt`.`kiosk_id` AS `kiosk_id`,`receipt`.`amount_cash` AS `amount_cash`,`receipt`.`amount_loan` AS `amount_loan`,`receipt`.`amount_mobile` AS `amount_mobile`,`receipt`.`amount_card` AS `amount_card`,`receipt`.`customer_account_id` AS `customer_account_id`,`product`.`unit_per_product` AS `unit_per_product`,(`receipt_line_item`.`quantity` * `product`.`unit_per_product`) AS `volume`,`receipt`.`total` AS `total`,`customer_account`.`name` AS `name`,`customer_account`.`income_level` AS `income_level`,`customer_account`.`customer_type_id` AS `customer_type_id` from (((`receipt_line_item` join `receipt` on((`receipt_line_item`.`receipt_id` = `receipt`.`id`))) join `product` on((`receipt_line_item`.`product_id` = `product`.`id`))) join `customer_account` on((`receipt`.`customer_account_id` = `customer_account`.`id`))) */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
